@@ -1,8 +1,12 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from "../layouts/Layout.astro";
+import DaylyShop from "../components/dailyShop/DailyShop";
 ---
 
-<Layout title="Fortnite">
-	<main>
-	</main>
+<Layout title="Fortnite Daily Shop">
+  <main>
+    <section>
+      <DaylyShop client:visible />
+    </section>
+  </main>
 </Layout>
