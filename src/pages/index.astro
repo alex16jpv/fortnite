@@ -1,12 +1,41 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import DaylyShop from "../components/dailyShop/DailyShop";
+import DailyShop from "../components/dailyShop/DailyShop";
+
+// SEO optimized metadata
+const title =
+  "Fortnite Daily Shop - Today's Items, Skins & Cosmetics | Live Updates";
+const description =
+  "Discover today's exclusive Fortnite items in the daily shop. Live updates with prices, rarity info, release dates, and detailed cosmetic information. Never miss your favorite skins!";
+const keywords =
+  "fortnite daily shop, item shop today, fortnite skins, cosmetics, battle royale, epic games, v-bucks, fortnite items, rare skins, legendary items";
+
+// Get current date for freshness
+const currentDate = new Date().toISOString();
 ---
 
-<Layout title="Fortnite Daily Shop">
-  <main>
-    <section>
-      <DaylyShop client:visible />
+<Layout
+  title={title}
+  description={description}
+  keywords={keywords}
+  type="website"
+  publishedTime={currentDate}
+  modifiedTime={currentDate}
+>
+  <main itemscope itemtype="https://schema.org/WebPage">
+    <meta itemprop="name" content={title} />
+    <meta itemprop="description" content={description} />
+    <meta itemprop="url" content={Astro.url.toString()} />
+
+    <section itemscope itemtype="https://schema.org/ItemList">
+      <meta itemprop="name" content="Fortnite Daily Shop Items" />
+      <meta
+        itemprop="description"
+        content="Current items available in the Fortnite daily shop"
+      />
+      <meta itemprop="numberOfItems" content="0" />
+
+      <DailyShop client:only="react" />
     </section>
   </main>
 </Layout>

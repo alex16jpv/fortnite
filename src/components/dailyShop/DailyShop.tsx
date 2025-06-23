@@ -121,8 +121,11 @@ const ShopItem = ({ item, onItemClick }: ShopItemProps) => {
           <img
             className="w-full h-full object-cover rounded-xl transition-transform duration-300 group-hover:scale-110"
             src={item?.displayAssets?.[0]?.full_background}
-            alt={item?.displayName}
+            alt={`${item?.displayName} - ${item?.rarity?.name || 'Common'} rarity ${item?.displayType || 'cosmetic'} in Fortnite for ${item?.price?.finalPrice || 0} V-Bucks`}
             loading="lazy"
+            width="400"
+            height="400"
+            decoding="async"
           />
         </div>
         
