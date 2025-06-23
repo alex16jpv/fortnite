@@ -13,18 +13,4 @@ export default defineConfig({
   experimental: {
     optimizeHoistedScript: true,
   },
-  vite: {
-    build: {
-      rollupOptions: {
-        output: {
-          manualChunks: {
-            "react-vendor": ["react", "react-dom"],
-          },
-        },
-      },
-    },
-    ssr: {
-      noExternal: ["react", "react-dom"],
-    },
-  },
 });
