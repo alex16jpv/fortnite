@@ -261,17 +261,39 @@ const ItemDetailModal = ({ item, isOpen, onClose }: ItemDetailModalProps) => {
               <div className="flex items-center justify-between p-4 bg-gray-800/50 rounded-xl">
                 <span className="text-gray-400">Price</span>
                 <div className="flex items-center space-x-2">
-                  <span className="text-yellow-400 font-bold text-2xl">
+                  <span className="text-blue-400 font-bold text-2xl">
                     {new Intl.NumberFormat().format(
                       item?.price?.finalPrice || 0
                     )}
                   </span>
                   <svg
-                    className="w-6 h-6 text-yellow-400"
+                    className="w-6 h-6 text-blue-400"
                     fill="currentColor"
-                    viewBox="0 0 20 20"
+                    viewBox="0 0 24 24"
                   >
-                    <path d="M10 2L13 8h6l-5 4 2 6-6-4-6 4 2-6-5-4h6z" />
+                    <circle
+                      cx="12"
+                      cy="12"
+                      r="11"
+                      fill="#3b82f6"
+                      stroke="#1e40af"
+                      strokeWidth="1.5"
+                    />
+                    <circle
+                      cx="12"
+                      cy="12"
+                      r="8"
+                      fill="#60a5fa"
+                      stroke="#2563eb"
+                      strokeWidth="1"
+                    />
+                    <path
+                      d="M8.5 12h7M12 8.5v7"
+                      stroke="white"
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                    />
+                    <circle cx="12" cy="12" r="2" fill="white" opacity="0.8" />
                   </svg>
                 </div>
               </div>
