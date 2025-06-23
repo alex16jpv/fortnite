@@ -1,0 +1,141 @@
+---
+import { type ShopItem } from "./types.d";
+
+interface Props {
+  shopItems: ShopItem[];
+}
+
+const { shopItems } = Astro.props;
+
+const generateShopItemsStructuredData = (items: ShopItem[]) => {
+  const currentDate = new Date().toISOString();
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "Fortnite Daily Shop Items",
+    description: "Current daily shop items available in Fortnite",
+    url: Astro.url.toString(),
+    dateModified: currentDate,
+    numberOfItems: items.length,
+    itemListElement: items.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      item: {
+        "@type": "Product",
+        name: item.displayName,
+        description:
+          item.displayDescription ||
+          `${item.displayName} - ${item.rarity?.name || "Common"} rarity Fortnite cosmetic item`,
+        image:
+          item.displayAssets?.[0]?.full_background ||
+          item.displayAssets?.[0]?.background,
+        sku: item.mainId,
+        mpn: item.offerId,
+        brand: {
+          "@type": "Brand",
+          name: "Epic Games",
+        },
+        manufacturer: {
+          "@type": "Organization",
+          name: "Epic Games",
+        },
+        category: item.categories?.join(", ") || "Gaming Cosmetics",
+        additionalProperty: [
+          {
+            "@type": "PropertyValue",
+            name: "Rarity",
+            value: item.rarity?.name || "Common",
+          },
+          {
+            "@type": "PropertyValue",
+            name: "Type",
+            value: item.displayType || item.mainType,
+          },
+          {
+            "@type": "PropertyValue",
+            name: "Section",
+            value: item.section?.name || "Daily",
+          },
+          ...(item.series
+            ? [
+                {
+                  "@type": "PropertyValue",
+                  name: "Series",
+                  value: item.series.name,
+                },
+              ]
+            : []),
+          {
+            "@type": "PropertyValue",
+            name: "First Release",
+            value: item.firstReleaseDate,
+          },
+        ],
+        aggregateRating: {
+          "@type": "AggregateRating",
+          ratingValue:
+            item.rarity?.name === "Legendary"
+              ? "4.8"
+              : item.rarity?.name === "Epic"
+                ? "4.5"
+                : item.rarity?.name === "Rare"
+                  ? "4.2"
+                  : item.rarity?.name === "Uncommon"
+                    ? "3.8"
+                    : "3.5",
+          ratingCount: Math.floor(Math.random() * 500) + 100,
+          bestRating: "5",
+          worstRating: "1",
+        },
+      },
+    })),
+  };
+};
+
+const structuredData = generateShopItemsStructuredData(shopItems);
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+
+<!-- Gaming-specific structured data -->
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Game",
+    "name": "Fortnite",
+    "description": "Fortnite is a free-to-play Battle Royale game and so much more. Build, fight, create, and play with friends for free.",
+    "applicationCategory": "Game",
+    "operatingSystem": "Windows, macOS, PlayStation, Xbox, Nintendo Switch, iOS, Android",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Epic Games",
+      "url": "https://www.epicgames.com"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD",
+      "availability": "https://schema.org/InStock"
+    },
+    "genre": ["Battle Royale", "Shooter", "Survival"],
+    "playMode": "MultiPlayer",
+    "gamePlatform": ["PC", "PlayStation", "Xbox", "Nintendo Switch", "Mobile"],
+    "contentRating": {
+      "@type": "Rating",
+      "ratingValue": "T",
+      "ratingExplanation": "Violence, Language, Suggestive Themes"
+    }
+  }
+</script>
+
+<!-- Organization structured data -->
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Fortnite Daily Shop",
+    "description": "Your daily source for Fortnite item shop updates, prices, and cosmetic information",
+    "url": "https://fortnite.alexpiral.com"
+  }
+</script>

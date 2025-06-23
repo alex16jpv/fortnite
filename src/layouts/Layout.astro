@@ -1,22 +1,185 @@
 ---
 interface Props {
-	title: string;
+  title: string;
+  description?: string;
+  image?: string;
+  url?: string;
+  type?: "website" | "article";
+  keywords?: string;
+  author?: string;
+  publishedTime?: string;
+  modifiedTime?: string;
 }
 
-const { title } = Astro.props;
+const {
+  title,
+  description = "Fortnite Daily Shop - Discover today's exclusive items, skins, and cosmetics. Live updates with prices, rarity, and detailed item information.",
+  image = "/og-image.jpg",
+  url = Astro.url.toString(),
+  type = "website",
+  keywords = "fortnite, daily shop, item shop, skins, cosmetics, battle royale, epic games, v-bucks, fortnite items",
+  author = "Fortnite Daily Shop",
+  publishedTime,
+  modifiedTime,
+} = Astro.props;
+
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
+const siteName = "Fortnite Daily Shop";
 ---
 
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="description" content="Astro description" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>{title}</title>
-	</head>
-	<body>
-		<slot />
-	</body>
+  <head>
+    <!-- Basic Meta Tags -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="keywords" content={keywords} />
+    <meta name="author" content={author} />
+    <meta
+      name="robots"
+      content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"
+    />
+    <meta name="googlebot" content="index, follow" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Title -->
+    <title>{title}</title>
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href={canonicalUrl} />
+
+    <!-- Favicon and Icons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#1e293b" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content={type} />
+    <meta property="og:url" content={url} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL(image, Astro.site).toString()} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={title} />
+    <meta property="og:site_name" content={siteName} />
+    <meta property="og:locale" content="en_US" />
+    {
+      publishedTime && (
+        <meta property="article:published_time" content={publishedTime} />
+      )
+    }
+    {
+      modifiedTime && (
+        <meta property="article:modified_time" content={modifiedTime} />
+      )
+    }
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={url} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta
+      name="twitter:image"
+      content={new URL(image, Astro.site).toString()}
+    />
+    <meta name="twitter:image:alt" content={title} />
+    <meta name="twitter:creator" content="@FortniteGame" />
+    <meta name="twitter:site" content="@FortniteGame" />
+    <!-- Preconnect to external domains -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://fortniteapi.io" />
+
+    <!-- Font Loading with font-display: swap for better performance -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Fortnite Daily Shop",
+        "description": "Discover today's exclusive Fortnite items, skins, and cosmetics with live updates on prices, rarity, and detailed item information.",
+        "url": "https://fortnite.alexpiral.com",
+        "applicationCategory": "GameApplication",
+        "operatingSystem": "All",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "author": {
+          "@type": "Organization",
+          "name": "AlexPiral"
+        },
+        "about": {
+          "@type": "VideoGame",
+          "name": "Fortnite",
+          "description": "Popular battle royale game by Epic Games",
+          "publisher": {
+            "@type": "Organization",
+            "name": "Epic Games"
+          }
+        }
+      }
+    </script>
+    <style>
+      html {
+        font-family: "Inter", system-ui, sans-serif;
+      }
+
+      /* Custom scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: #1a1a1a;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+        border-radius: 4px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(45deg, #2563eb, #7c3aed);
+      }
+
+      /* Line clamp utility */
+      .line-clamp-2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      /* Optimize font loading */
+      @font-face {
+        font-family: "Inter-fallback";
+        size-adjust: 100.06%;
+        src: local("Arial");
+      }
+
+      html {
+        font-family: "Inter", "Inter-fallback", system-ui, sans-serif;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-slate-900 antialiased"
+    itemscope
+    itemtype="https://schema.org/WebPage"
+  >
+    <slot />
+  </body>
 </html>
